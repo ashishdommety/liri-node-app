@@ -2,56 +2,42 @@ var request = require("request");
 const key = require('./keys.js');
 
 var arr = [];
-for(var i = 3; i < process.argv.length;i++){
+for (var i = 3; i < process.argv.length; i++) {
   arr.push(process.argv[i]);
 }
 
 var category = process.argv[2];
 var name = arr.join("-");
 
-if(category === "movie-this"){
-  if(name === undefined){
-    var queryUrl = "http://www.omdbapi.com/?apikey=40e9cece&t=Mr-Nobody";
-    getMovieData();
-  }
-  else{
-    var queryUrl = "http://www.omdbapi.com/?apikey=40e9cece&t=" + name;
-    getMovieData();
-    // console.log("the movie you entered is: "+ name);
-  }
-}
-else if(category === "my-tweets"){
-  console.log(key.twitterKeys);
-  console.log("tweet stuff");
-}
-else if(category === "spotify-this-song"){
-  console.log("name is: " + name);
-  if(name === ""){
-    var queryValue = "ace-of-base";
-    getSongData();
-  }
-  else{
-    var queryValue = name;
-    getSongData();
-  }
-}
-else if(category === "do-what-it-says"){
+if (category === "movie-this") {
+  getMovieData();
+} else if (category === "my-tweets") {
+  getTweets();
+} else if (category === "spotify-this-song") {
+  // console.log("name is: " + name);
+  getSongData();
+} else if (category === "do-what-it-says") {
   console.log("something stuff");
-}
-else{
+} else {
   console.log("invalid entry");
 }
 
 //functions
-function getMovieData(){
-  request(queryUrl, function(error, response, body){
-    if(!error && response.statusCode === 200){
+function getMovieData() {
+  var queryUrl;
+  if (name === "") {
+    queryUrl = "http://www.omdbapi.com/?apikey=40e9cece&t=Mr-Nobody";
+  } else {
+    queryUrl = "http://www.omdbapi.com/?apikey=40e9cece&t=" + name;
+  }
+  request(queryUrl, function(error, response, body) {
+    if (!error && response.statusCode === 200) {
       //we need the JSON.parse because the body returns a string
       var data = JSON.parse(body);
       console.log("Title: " + data.Title);
       console.log("Year: " + data.Year);
       console.log("IMDB Rating: " + data.imdbRating);
-      console.log(data.Ratings["1"].Source +" : "+data.Ratings["1"].Value);
+      console.log(data.Ratings["1"].Source + " : " + data.Ratings["1"].Value);
       console.log("Country: " + data.Country);
       console.log("Language: " + data.Language);
       console.log("Plot: " + data.Plot);
@@ -60,8 +46,17 @@ function getMovieData(){
   });
 }
 
-function getSongData(){
-  key.spotifyKeys.search({ type: 'track', query: queryValue }, function(err, data) {
+function getSongData() {
+  if (name === "") {
+    var queryValue = "ace-of-base";
+  }
+  else{
+    var queryValue = name;
+  }
+  key.spotifyKeys.search({
+    type: 'track',
+    query: queryValue
+  }, function(err, data) {
     if (err) {
       return console.log('Error occurred: ' + err);
     }
@@ -78,5 +73,31 @@ function getSongData(){
   });
 }
 
-// NOTE: need to work on twitter and do-what-it-says
+function getTweets() {
+  if (name === "") {
+    var params = {
+      screen_name: 'ashishuiux'
+    };
+  } else {
+    var params = {
+      screen_name: name
+    };
+  }
+  key.twitterKeys.get('statuses/user_timeline', params, function(error, tweets, response) {
+    if (!error) {
+      if (tweets.length === 0) {
+        console.log("this user has 0 tweets");
+      }
+      for (var i = 0; i < tweets.length; i++) {
+        console.log("------------ Tweet Number " + i + " ------------");
+        console.log("Date: " + tweets[i].created_at);
+        console.log("Tweet: " + tweets[i].text);
+      }
+    } else {
+      throw error
+    }
+  });
+}
+
+// NOTE: need to work on do-what-it-says
 // NOTE: bonus - logging the data in a log.txt
