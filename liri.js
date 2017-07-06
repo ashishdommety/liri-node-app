@@ -1,5 +1,6 @@
-var request = require("request");
+const request = require("request");
 const key = require('./keys.js');
+const fs = require("fs");
 
 var arr = [];
 for (var i = 3; i < process.argv.length; i++) {
@@ -17,7 +18,10 @@ if (category === "movie-this") {
   // console.log("name is: " + name);
   getSongData();
 } else if (category === "do-what-it-says") {
-  console.log("something stuff");
+  getFileData();
+  //read the text file and split the values up into category and name
+  //based on the category, call that specific function (if else statement)
+  // console.log("something stuff");
 } else {
   console.log("invalid entry");
 }
@@ -99,5 +103,30 @@ function getTweets() {
   });
 }
 
-// NOTE: need to work on do-what-it-says
-// NOTE: bonus - logging the data in a log.txt
+function getFileData(){
+  fs.readFile("random.txt", "utf8", function(error,data){
+    if(error){
+      return console.log(error);
+    }
+    // console.log(data);
+
+    var dataArr = data.split(",");
+
+    category = dataArr[0];
+    name = dataArr[1];
+
+    // console.log(category);
+    if(category === "spotify-this-song"){
+      getSongData();
+    }
+    else if(category === "movie-this"){
+      getMovieData();
+    }
+    else if(category === "my-tweets"){
+      getTweets();
+    }
+  })
+}
+// TODO: find song link, not whole album link
+// TODO: fix tweet functionality in do what it says
+// TODO: append text to a log.txt file
