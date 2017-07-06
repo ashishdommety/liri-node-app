@@ -18,10 +18,9 @@ if (category === "movie-this") {
   // console.log("name is: " + name);
   getSongData();
 } else if (category === "do-what-it-says") {
-  getFileData();
   //read the text file and split the values up into category and name
   //based on the category, call that specific function (if else statement)
-  // console.log("something stuff");
+  getFileData();
 } else {
   console.log("invalid entry");
 }
@@ -119,7 +118,6 @@ function getFileData(){
     category = dataArr[0];
     name = dataArr[1];
 
-    // console.log(category);
     if(category === "spotify-this-song"){
       getSongData();
     }
@@ -132,4 +130,4 @@ function getFileData(){
   })
 }
 // TODO: find song link, not whole album link
-// TODO: append text to a log.txt file
+// TODO: append data to a log.txt file
