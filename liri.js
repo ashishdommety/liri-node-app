@@ -78,6 +78,8 @@ function getSongData() {
 }
 
 function getTweets() {
+  name = name.replace('\r\n','');
+  name = name.replace(/"/g,'');
   if (name === "") {
     var params = {
       screen_name: 'ashishuiux'
@@ -88,6 +90,8 @@ function getTweets() {
     };
   }
   key.twitterKeys.get('statuses/user_timeline', params, function(error, tweets, response) {
+    console.log(params);
+    // console.log(tweets);
     if (!error) {
       if (tweets.length === 0) {
         console.log("this user has 0 tweets");
@@ -128,5 +132,4 @@ function getFileData(){
   })
 }
 // TODO: find song link, not whole album link
-// TODO: fix tweet functionality in do what it says
 // TODO: append text to a log.txt file
