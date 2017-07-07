@@ -4,10 +4,10 @@ LIRI is a command line node app that takes in parameters and gives you back data
 ## What kind of parameters?
 There are four different commands you can make.
 They are :
-1. **my-tweets**[Link to my-tweets](### 1. my-tweets)
-2. **spotify-this-song**[Link to spotify-this-song](### 2. spotify-this-song)
-3. **movie-this**[Link to movie-this](### 3. movie-this)
-4. **do-what-it-says**[Link to do-what-it-says](### 4. do-what-it-says)
+1. **my-tweets**
+2. **spotify-this-song**
+3. **movie-this**
+4. **do-what-it-says**
 
 After logging into the right directory with the source files, we need to enter the first set of parameters that are common to all:
 
