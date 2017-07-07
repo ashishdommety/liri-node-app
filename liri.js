@@ -156,5 +156,3 @@ function getFileData(){
     }
   })
 }
-// TODO: look for the song link in spotify and not the whole album
-// TODO: append data to a log.txt file (what kind of data needs to be logged?
