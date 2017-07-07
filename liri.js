@@ -25,7 +25,8 @@ if (category === "movie-this") {
   console.log("invalid entry");
 }
 
-//functions
+// NOTE: Functions start here
+
 function getMovieData() {
   var queryUrl;
   if (name === "") {
@@ -34,6 +35,14 @@ function getMovieData() {
     queryUrl = "http://www.omdbapi.com/?apikey=40e9cece&t=" + name;
   }
   request(queryUrl, function(error, response, body) {
+    fs.appendFile("log.txt","movie-this \n" + body + "\n\n",function(err){
+      if(err){
+        console.log(err);
+      }
+      else{
+        console.log('appended');
+      }
+    });
     if (!error && response.statusCode === 200) {
       //we need the JSON.parse because the body returns a string
       var data = JSON.parse(body);
@@ -63,6 +72,16 @@ function getSongData() {
     if (err) {
       return console.log('Error occurred: ' + err);
     }
+    var chosenSong = data.tracks.items[0];
+    var songStuff = JSON.stringify(chosenSong);
+    fs.appendFile("log.txt","spotify-this-song \n" + songStuff + "\n\n",function(err){
+      if(err){
+        console.log(err);
+      }
+      else{
+        console.log('appended');
+      }
+    });
     //artists name
     console.log("Artist's name: " + data.tracks.items[0].album.artists[0].name);
     //album name
@@ -89,16 +108,25 @@ function getTweets() {
     };
   }
   key.twitterKeys.get('statuses/user_timeline', params, function(error, tweets, response) {
-    console.log(params);
     // console.log(tweets);
     if (!error) {
       if (tweets.length === 0) {
         console.log("this user has 0 tweets");
       }
+      var tweetStuff = JSON.stringify(response);
+      fs.appendFile("log.txt","tweets \n" + tweetStuff + "\n\n",function(err){
+        if(err){
+          console.log(err);
+        }
+        else{
+          console.log('appended');
+        }
+      });
       for (var i = 0; i < tweets.length; i++) {
-        console.log("------------ Tweet Number " + i + " ------------");
+        console.log("------------ Tweet Number " + (i+1) + " ------------");
         console.log("Date: " + tweets[i].created_at);
         console.log("Tweet: " + tweets[i].text);
+
       }
     } else {
       throw error
@@ -111,7 +139,6 @@ function getFileData(){
     if(error){
       return console.log(error);
     }
-    // console.log(data);
 
     var dataArr = data.split(",");
 
@@ -129,5 +156,5 @@ function getFileData(){
     }
   })
 }
-// TODO: find song link, not whole album link
-// TODO: append data to a log.txt file
+// TODO: look for the song link in spotify and not the whole album
+// TODO: append data to a log.txt file (what kind of data needs to be logged?
