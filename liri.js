@@ -35,12 +35,11 @@ function getMovieData() {
     queryUrl = "http://www.omdbapi.com/?apikey=40e9cece&t=" + name;
   }
   request(queryUrl, function(error, response, body) {
-    fs.appendFile("log.txt","movie-this \n" + body + "\n\n",function(err){
-      if(err){
+    fs.appendFile("log.txt", "movie-this \n" + body + "\n\n", function(err) {
+      if (err) {
         console.log(err);
-      }
-      else{
-        console.log('appended');
+      } else {
+        console.log('appended to log.txt');
       }
     });
     if (!error && response.statusCode === 200) {
@@ -61,8 +60,7 @@ function getMovieData() {
 function getSongData() {
   if (name === "") {
     var queryValue = "ace-of-base";
-  }
-  else{
+  } else {
     var queryValue = name;
   }
   key.spotifyKeys.search({
@@ -74,12 +72,11 @@ function getSongData() {
     }
     var chosenSong = data.tracks.items[0];
     var songStuff = JSON.stringify(chosenSong);
-    fs.appendFile("log.txt","spotify-this-song \n" + songStuff + "\n\n",function(err){
-      if(err){
+    fs.appendFile("log.txt", "spotify-this-song \n" + songStuff + "\n\n", function(err) {
+      if (err) {
         console.log(err);
-      }
-      else{
-        console.log('appended');
+      } else {
+        console.log('appended to log.txt');
       }
     });
     //artists name
@@ -96,8 +93,8 @@ function getSongData() {
 }
 
 function getTweets() {
-  name = name.replace('\r\n','');
-  name = name.replace(/"/g,'');
+  name = name.replace('\r\n', '');
+  name = name.replace(/"/g, '');
   if (name === "") {
     var params = {
       screen_name: 'ashishuiux'
@@ -114,16 +111,15 @@ function getTweets() {
         console.log("this user has 0 tweets");
       }
       var tweetStuff = JSON.stringify(response);
-      fs.appendFile("log.txt","tweets \n" + tweetStuff + "\n\n",function(err){
-        if(err){
+      fs.appendFile("log.txt", "tweets \n" + tweetStuff + "\n\n", function(err) {
+        if (err) {
           console.log(err);
-        }
-        else{
-          console.log('appended');
+        } else {
+          console.log('appended to log.txt');
         }
       });
       for (var i = 0; i < tweets.length; i++) {
-        console.log("------------ Tweet Number " + (i+1) + " ------------");
+        console.log("------------ Tweet Number " + (i + 1) + " ------------");
         console.log("Date: " + tweets[i].created_at);
         console.log("Tweet: " + tweets[i].text);
 
@@ -134,9 +130,9 @@ function getTweets() {
   });
 }
 
-function getFileData(){
-  fs.readFile("random.txt", "utf8", function(error,data){
-    if(error){
+function getFileData() {
+  fs.readFile("random.txt", "utf8", function(error, data) {
+    if (error) {
       return console.log(error);
     }
 
@@ -145,13 +141,11 @@ function getFileData(){
     category = dataArr[0];
     name = dataArr[1];
 
-    if(category === "spotify-this-song"){
+    if (category === "spotify-this-song") {
       getSongData();
-    }
-    else if(category === "movie-this"){
+    } else if (category === "movie-this") {
       getMovieData();
-    }
-    else if(category === "my-tweets"){
+    } else if (category === "my-tweets") {
       getTweets();
     }
   })
